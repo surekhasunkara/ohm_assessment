@@ -237,7 +237,7 @@ class User(db.Model):
 
     @classmethod
     def recent_sql(cls):
-        result = db.session.execute('SELECT * FROM user ORDER BY create_time DESC')
+        result = db.session.execute('SELECT * FROM user ORDER BY create_time DESC LIMIT 5')
         return result
 
     @classmethod
