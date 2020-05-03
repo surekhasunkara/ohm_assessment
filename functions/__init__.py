@@ -32,7 +32,7 @@ def generate_mysql_uri(settings):
 ##############
 # CREATE APP #
 ##############
-app = Flask(__name__, template_folder="../templates")
+app = Flask(__name__, template_folder="../templates", static_folder='../assets')
 Mobility(app)
 app.secret_key = 'cauliflowers'
 app.debug = False

@@ -26,6 +26,7 @@ css_base_map:
     - css/jquery-ui.theme.css
     - css/fonts_open_sans.css
     - css/ohm-bootstrap.css
+    - css/basic-page-style.css
     - bower_components/bootstrap-material-design/dist/css/ripples.min.css
     - css/ohm-material-wfont.css
     - bower_components/snackbarjs/dist/snackbar.min.css

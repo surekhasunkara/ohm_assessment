@@ -163,23 +163,36 @@ class User(db.Model):
 
     def is_below_tier(self, tier):
         current_tier = self.get_tier()
+        top_tiers = self.get_top_tiers(current_tier)
 
         if current_tier == "Platinum":
             return False
 
-        if current_tier == "Gold" and tier == "Platinum":
+        if current_tier == "Gold" and tier in top_tiers:
             return True
 
-        if current_tier == "Silver" and tier in ("Gold", "Platinum"):
+        if current_tier == "Silver" and tier in top_tiers:
             return True
 
-        if current_tier == "Bronze" and tier in ("Silver", "Gold", "Platinum"):
+        if current_tier == "Bronze" and tier in top_tiers:
             return True
 
-        if current_tier == "Carbon" and tier in ("Bronze", "Silver", "Gold", "Platinum"):
+        if current_tier == "Carbon" and tier in top_tiers:
             return True
 
         return False
+
+    def get_top_tiers(self, current_tier):
+        """Helper method to get all tiers above current tier."""
+        top_tiers = ["Carbon", "Bronze", "Silver", "Gold", "Platinum"]
+        result = []
+        is_top = False
+        for tier in top_tiers:
+            if is_top:
+                result.append(tier)
+            if current_tier == tier:
+                is_top = True
+        return result
 
     # These are for Flask Login --------
     #
@@ -217,6 +230,15 @@ class User(db.Model):
     @classmethod
     def last(cls):
         return cls.query.order_by(cls.user_id.desc()).first()
+
+    @classmethod
+    def recent(cls):
+        return cls.query.order_by(cls.user_id.desc()).limit(5).all()
+
+    @classmethod
+    def recent_sql(cls):
+        result = db.session.execute('SELECT * FROM user ORDER BY create_time DESC')
+        return result
 
     @classmethod
     def get_by_email(cls, email):
